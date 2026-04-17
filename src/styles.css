@@ -173,6 +173,23 @@
     overflow: hidden;
     transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s, border-color 0.3s;
   }
+  .bento::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      320px circle at var(--mx, 50%) var(--my, 50%),
+      oklch(0.78 0.14 180 / 0.15),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bento:hover::before { opacity: 1; }
+  .bento > * { position: relative; z-index: 1; }
   .bento:hover {
     background: var(--bento-hi);
     border-color: oklch(1 0 0 / 12%);
