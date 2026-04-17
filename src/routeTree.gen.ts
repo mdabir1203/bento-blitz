@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkRouteImport } from './routes/work'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiMediumRouteImport } from './routes/api/medium'
 
 const WorkRoute = WorkRouteImport.update({
   id: '/work',
@@ -23,40 +22,31 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiMediumRoute = ApiMediumRouteImport.update({
-  id: '/api/medium',
-  path: '/api/medium',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/work': typeof WorkRoute
-  '/api/medium': typeof ApiMediumRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/work': typeof WorkRoute
-  '/api/medium': typeof ApiMediumRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/work': typeof WorkRoute
-  '/api/medium': typeof ApiMediumRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/work' | '/api/medium'
+  fullPaths: '/' | '/work'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/work' | '/api/medium'
-  id: '__root__' | '/' | '/work' | '/api/medium'
+  to: '/' | '/work'
+  id: '__root__' | '/' | '/work'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   WorkRoute: typeof WorkRoute
-  ApiMediumRoute: typeof ApiMediumRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,20 +65,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/medium': {
-      id: '/api/medium'
-      path: '/api/medium'
-      fullPath: '/api/medium'
-      preLoaderRoute: typeof ApiMediumRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   WorkRoute: WorkRoute,
-  ApiMediumRoute: ApiMediumRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
