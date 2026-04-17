@@ -198,14 +198,22 @@ export default function Bento() {
               </span>
             ))}
           </div>
-          <a
-            href="https://wave-link-cards.vercel.app/"
-            target="_blank"
-            rel="noreferrer"
-            className="mt-5 inline-flex items-center gap-1 text-sm text-[color:var(--accent-teal)] hover:gap-2 transition-all"
-          >
-            Explore Wavelink <ArrowUpRight className="h-4 w-4" />
-          </a>
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <Link
+              to="/work"
+              className="inline-flex items-center gap-1 rounded-full bg-[color:var(--accent-teal)] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.15em] text-[color:var(--ink)] hover:gap-2 transition-all"
+            >
+              See case studies <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
+            <a
+              href="https://wave-link-cards.vercel.app/"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 text-sm text-foreground/70 hover:text-foreground hover:gap-2 transition-all"
+            >
+              Explore Wavelink <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
         </motion.div>
 
         {/* CONTACT CTA */}
@@ -257,8 +265,13 @@ export default function Bento() {
           </ol>
         </motion.div>
 
+        {/* MEDIUM */}
+        <motion.div {...fade(0.2)} className="bento sm:col-span-4 md:col-span-4">
+          <MediumCard />
+        </motion.div>
+
         {/* LANGUAGES */}
-        <motion.div {...fade(0.2)} className="bento sm:col-span-2 md:col-span-2">
+        <motion.div {...fade(0.25)} className="bento sm:col-span-4 md:col-span-2">
           <Tag>// Spoken</Tag>
           <div className="mt-4 grid grid-cols-3 gap-3">
             {[
