@@ -52,18 +52,35 @@ function Tag({ children }: { children: React.ReactNode }) {
 }
 
 export default function Bento() {
+  const ref = useSpotlight();
   return (
-    <main className="min-h-screen px-4 py-6 md:px-8 md:py-10">
+    <main
+      ref={ref as React.RefObject<HTMLElement>}
+      className="min-h-screen px-4 py-6 md:px-8 md:py-10 print:p-0"
+    >
       {/* Top bar */}
-      <header className="mx-auto mb-6 flex max-w-[1280px] items-center justify-between">
+      <header className="mx-auto mb-6 flex max-w-[1280px] items-center justify-between print:hidden">
         <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-foreground/70">
           <span className="pulse-dot" /> AVAILABLE — Q1 2026
         </div>
-        <nav className="hidden items-center gap-6 font-mono text-xs uppercase tracking-[0.2em] text-foreground/60 md:flex">
-          <a href="#work" className="hover:text-foreground">Work</a>
+        <nav className="hidden items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] text-foreground/60 md:flex">
+          <Link to="/work" className="hover:text-foreground">Work</Link>
           <a href="#stack" className="hover:text-foreground">Stack</a>
           <a href="mailto:abir.abbas@proton.me" className="hover:text-foreground">Contact</a>
+          <button
+            onClick={() => window.print()}
+            className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--accent-teal)]/40 bg-[color:var(--accent-teal)]/10 px-3 py-1 text-[color:var(--accent-teal)] hover:bg-[color:var(--accent-teal)]/20"
+          >
+            <Download className="h-3 w-3" /> Resume
+          </button>
         </nav>
+        <button
+          onClick={() => window.print()}
+          aria-label="Download resume"
+          className="md:hidden inline-flex items-center gap-1 rounded-full border border-[color:var(--accent-teal)]/40 bg-[color:var(--accent-teal)]/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--accent-teal)]"
+        >
+          <Download className="h-3 w-3" /> PDF
+        </button>
       </header>
 
       {/* Bento Grid */}
