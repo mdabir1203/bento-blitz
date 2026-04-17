@@ -189,8 +189,8 @@ export default function Bento() {
           </a>
           <div className="mt-4 flex gap-2">
             <a href="mailto:abir.abbas@proton.me" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Email"><Mail className="h-4 w-4" /></a>
-            <a href="https://www.linkedin.com/in/abir-abbas" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="LinkedIn"><Linkedin className="h-4 w-4" /></a>
-            <a href="https://github.com/" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Github"><Github className="h-4 w-4" /></a>
+            <a href="https://www.linkedin.com/in/abir-abbas" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="LinkedIn"><LinkedinIcon className="h-4 w-4" /></a>
+            <a href="https://github.com/" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Github"><GithubIcon className="h-4 w-4" /></a>
           </div>
         </motion.div>
 
