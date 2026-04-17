@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import {
   ArrowUpRight,
-  GithubIcon,
-  LinkedinIcon,
+  Code2,
+  Link as LinkIcon,
   Mail,
   MapPin,
   Sparkles,
