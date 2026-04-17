@@ -1,4 +1,6 @@
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 import {
   ArrowUpRight,
   Code2,
@@ -11,8 +13,29 @@ import {
   Workflow,
   Zap,
   TrendingUp,
+  Download,
 } from "lucide-react";
 import abir from "@/assets/abir.webp";
+import MediumCard from "@/components/MediumCard";
+
+function useSpotlight() {
+  const ref = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const onMove = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      const card = target?.closest<HTMLElement>(".bento");
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      card.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    };
+    root.addEventListener("mousemove", onMove);
+    return () => root.removeEventListener("mousemove", onMove);
+  }, []);
+  return ref;
+}
 
 const fade = (delay = 0) => ({
   initial: { opacity: 0, y: 14 },
@@ -29,18 +52,35 @@ function Tag({ children }: { children: React.ReactNode }) {
 }
 
 export default function Bento() {
+  const ref = useSpotlight();
   return (
-    <main className="min-h-screen px-4 py-6 md:px-8 md:py-10">
+    <main
+      ref={ref as React.RefObject<HTMLElement>}
+      className="min-h-screen px-4 py-6 md:px-8 md:py-10 print:p-0"
+    >
       {/* Top bar */}
-      <header className="mx-auto mb-6 flex max-w-[1280px] items-center justify-between">
+      <header className="mx-auto mb-6 flex max-w-[1280px] items-center justify-between print:hidden">
         <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-foreground/70">
           <span className="pulse-dot" /> AVAILABLE — Q1 2026
         </div>
-        <nav className="hidden items-center gap-6 font-mono text-xs uppercase tracking-[0.2em] text-foreground/60 md:flex">
-          <a href="#work" className="hover:text-foreground">Work</a>
+        <nav className="hidden items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] text-foreground/60 md:flex">
+          <Link to="/work" className="hover:text-foreground">Work</Link>
           <a href="#stack" className="hover:text-foreground">Stack</a>
           <a href="mailto:abir.abbas@proton.me" className="hover:text-foreground">Contact</a>
+          <button
+            onClick={() => window.print()}
+            className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--accent-teal)]/40 bg-[color:var(--accent-teal)]/10 px-3 py-1 text-[color:var(--accent-teal)] hover:bg-[color:var(--accent-teal)]/20"
+          >
+            <Download className="h-3 w-3" /> Resume
+          </button>
         </nav>
+        <button
+          onClick={() => window.print()}
+          aria-label="Download resume"
+          className="md:hidden inline-flex items-center gap-1 rounded-full border border-[color:var(--accent-teal)]/40 bg-[color:var(--accent-teal)]/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--accent-teal)]"
+        >
+          <Download className="h-3 w-3" /> PDF
+        </button>
       </header>
 
       {/* Bento Grid */}
@@ -158,14 +198,22 @@ export default function Bento() {
               </span>
             ))}
           </div>
-          <a
-            href="https://wave-link-cards.vercel.app/"
-            target="_blank"
-            rel="noreferrer"
-            className="mt-5 inline-flex items-center gap-1 text-sm text-[color:var(--accent-teal)] hover:gap-2 transition-all"
-          >
-            Explore Wavelink <ArrowUpRight className="h-4 w-4" />
-          </a>
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <Link
+              to="/work"
+              className="inline-flex items-center gap-1 rounded-full bg-[color:var(--accent-teal)] px-4 py-1.5 text-xs font-medium uppercase tracking-[0.15em] text-[color:var(--ink)] hover:gap-2 transition-all"
+            >
+              See case studies <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
+            <a
+              href="https://wave-link-cards.vercel.app/"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 text-sm text-foreground/70 hover:text-foreground hover:gap-2 transition-all"
+            >
+              Explore Wavelink <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
         </motion.div>
 
         {/* CONTACT CTA */}
@@ -217,8 +265,13 @@ export default function Bento() {
           </ol>
         </motion.div>
 
+        {/* MEDIUM */}
+        <motion.div {...fade(0.2)} className="bento sm:col-span-4 md:col-span-4">
+          <MediumCard />
+        </motion.div>
+
         {/* LANGUAGES */}
-        <motion.div {...fade(0.2)} className="bento sm:col-span-2 md:col-span-2">
+        <motion.div {...fade(0.25)} className="bento sm:col-span-4 md:col-span-2">
           <Tag>// Spoken</Tag>
           <div className="mt-4 grid grid-cols-3 gap-3">
             {[
