@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight, BookOpen } from "lucide-react";
-
-type Post = { title: string; link: string; pubDate: string };
+import { fetchMediumPosts, type MediumPost } from "@/server/medium";
 
 export default function MediumCard() {
-  const [posts, setPosts] = useState<Post[] | null>(null);
+  const [posts, setPosts] = useState<MediumPost[] | null>(null);
 
   useEffect(() => {
     let active = true;
-    fetch("/api/medium")
-      .then((r) => r.json())
-      .then((d) => {
-        if (active) setPosts(d.posts ?? []);
-      })
+    fetchMediumPosts()
+      .then((d) => active && setPosts(d.posts ?? []))
       .catch(() => active && setPosts([]));
     return () => {
       active = false;
