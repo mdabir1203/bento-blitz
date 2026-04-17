@@ -230,3 +230,29 @@
     100% { box-shadow: 0 0 0 0 oklch(0.92 0.18 125 / 0); }
   }
 }
+
+@media print {
+  @page { size: A4; margin: 12mm; }
+  :root {
+    --background: #ffffff;
+    --foreground: #0b0b0b;
+    --bento: #ffffff;
+    --bento-hi: #ffffff;
+    --grid-line: rgba(0,0,0,0.12);
+  }
+  html, body { background: #fff !important; color: #0b0b0b !important; }
+  .marquee, .pulse-dot { display: none !important; animation: none !important; }
+  .grain::after, .bento::before { display: none !important; }
+  .bento {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid rgba(0,0,0,0.12) !important;
+    background: #fff !important;
+    transform: none !important;
+    box-shadow: none !important;
+    padding: 0.6rem !important;
+  }
+  .bento img { filter: none !important; }
+  h1, h2, h3 { color: #0b0b0b !important; }
+  a { color: #0b0b0b !important; text-decoration: none !important; }
+}
