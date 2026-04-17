@@ -1,4 +1,6 @@
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 import {
   ArrowUpRight,
   Code2,
@@ -11,8 +13,29 @@ import {
   Workflow,
   Zap,
   TrendingUp,
+  Download,
 } from "lucide-react";
 import abir from "@/assets/abir.webp";
+import MediumCard from "@/components/MediumCard";
+
+function useSpotlight() {
+  const ref = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const onMove = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      const card = target?.closest<HTMLElement>(".bento");
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      card.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    };
+    root.addEventListener("mousemove", onMove);
+    return () => root.removeEventListener("mousemove", onMove);
+  }, []);
+  return ref;
+}
 
 const fade = (delay = 0) => ({
   initial: { opacity: 0, y: 14 },
