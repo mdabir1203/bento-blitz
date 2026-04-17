@@ -1,26 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
+import Bento from "@/components/Bento";
 
 export const Route = createFileRoute("/")({
-  component: Index,
+  component: Bento,
+  head: () => ({
+    meta: [
+      { title: "Mohammad Abir Abbas — Creative Technologist & AI Architect" },
+      {
+        name: "description",
+        content:
+          "AI workflows that recapture engineering hours and protect enterprise assets. Wavelink CTA, ex-Deep Blue Digital. Bento portfolio.",
+      },
+      { property: "og:title", content: "Mohammad Abir Abbas — Creative Technologist" },
+      {
+        property: "og:description",
+        content: "Scaling AI safely. Predictable ROI. Bento portfolio.",
+      },
+    ],
+  }),
 });
-
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
-function Index() {
-  return <PlaceholderIndex />;
-}
