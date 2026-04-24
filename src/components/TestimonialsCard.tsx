@@ -28,7 +28,7 @@ export default function TestimonialsCard() {
         <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/60">
           // From LinkedIn
         </span>
-        <Linkedin className="h-3.5 w-3.5 text-[color:var(--accent-teal)]" />
+        <LinkIcon className="h-3.5 w-3.5 text-[color:var(--accent-teal)]" />
       </div>
 
       <div className="relative mt-3 flex-1 overflow-hidden">

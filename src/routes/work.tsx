@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowUpRight, Target, Cog, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Target, Cog, ShieldCheck, Trophy } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 
 type CaseStudy = {
   slug: string;
