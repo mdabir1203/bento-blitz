@@ -1,4 +1,4 @@
-import { Youtube, ArrowUpRight, Play } from "lucide-react";
+import { Video, ArrowUpRight, Play } from "lucide-react";
 
 const CHANNEL = "https://www.youtube.com/@wavelinkd";
 
@@ -23,7 +23,7 @@ export default function YouTubeCard() {
           rel="noreferrer"
           className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--accent-teal)] hover:gap-1.5 transition-all"
         >
-          <Youtube className="h-3 w-3" /> @wavelinkd <ArrowUpRight className="h-2.5 w-2.5" />
+          <Video className="h-3 w-3" /> @wavelinkd <ArrowUpRight className="h-2.5 w-2.5" />
         </a>
       </div>
 

@@ -1,4 +1,4 @@
-import { Quote, Linkedin } from "lucide-react";
+import { Quote, Link as LinkIcon } from "lucide-react";
 
 // SCAFFOLD — replace these two with real LinkedIn quotes when you paste them.
 const testimonials = [
