@@ -17,6 +17,9 @@ import {
 } from "lucide-react";
 import abir from "@/assets/abir.webp";
 import MediumCard from "@/components/MediumCard";
+import AwardsCard from "@/components/AwardsCard";
+import YouTubeCard from "@/components/YouTubeCard";
+import TestimonialsCard from "@/components/TestimonialsCard";
 
 function useSpotlight() {
   const ref = useRef<HTMLElement | null>(null);
@@ -265,9 +268,9 @@ export default function Bento() {
           </ol>
         </motion.div>
 
-        {/* MEDIUM */}
-        <motion.div {...fade(0.2)} className="bento sm:col-span-4 md:col-span-4">
-          <MediumCard />
+        {/* AWARDS */}
+        <motion.div {...fade(0.18)} className="bento sm:col-span-4 md:col-span-4">
+          <AwardsCard />
         </motion.div>
 
         {/* LANGUAGES */}
@@ -285,6 +288,21 @@ export default function Bento() {
               </div>
             ))}
           </div>
+        </motion.div>
+
+        {/* YOUTUBE */}
+        <motion.div {...fade(0.2)} className="bento sm:col-span-4 md:col-span-4">
+          <YouTubeCard />
+        </motion.div>
+
+        {/* TESTIMONIALS — marquee */}
+        <motion.div {...fade(0.22)} className="bento sm:col-span-4 md:col-span-2 overflow-hidden">
+          <TestimonialsCard />
+        </motion.div>
+
+        {/* MEDIUM */}
+        <motion.div {...fade(0.2)} className="bento sm:col-span-4 md:col-span-6">
+          <MediumCard />
         </motion.div>
       </section>
 
