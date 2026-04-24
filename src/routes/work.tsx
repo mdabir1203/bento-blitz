@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowUpRight, Target, Cog, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Target, Cog, ShieldCheck, Trophy } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 
 type CaseStudy = {
   slug: string;
@@ -225,6 +226,52 @@ function WorkPage() {
             </div>
           </motion.article>
         ))}
+      </section>
+
+      {/* Hackathon wins — brief mentions */}
+      <section className="mx-auto mt-10 max-w-[1100px]">
+        <div className="mb-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/50">
+          <Trophy className="h-3 w-3 text-[color:var(--accent-amber)]" /> // Hackathon wins
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          {[
+            {
+              title: "RedAGPT",
+              award: "Redis Side Quest — Winner",
+              tagline: "Network Security Agents",
+              blurb:
+                "Built multi-agent system on Redis vector store to detect, triage, and propose remediations for real-time network anomalies. Won the Redis Side Quest for novel use of Redis as both memory and message bus for autonomous agents.",
+              tone: "lime" as const,
+            },
+            {
+              title: "SmartSwap",
+              award: "MIT Hacknation 2026 — Next Best",
+              tagline: "Recognised as a Next Best Project",
+              blurb:
+                "Designed and shipped SmartSwap during MIT's global Hacknation 2026. Recognised in the Next Best Project tier for execution quality and demo polish under a 48-hour constraint.",
+              tone: "amber" as const,
+            },
+          ].map((h) => (
+            <article
+              key={h.title}
+              className="bento grain"
+            >
+              <div className={`font-mono text-[10px] uppercase tracking-[0.2em] ${h.tone === "lime" ? "text-[color:var(--accent-lime)]" : "text-[color:var(--accent-amber)]"}`}>
+                {h.award}
+              </div>
+              <h3 className="mt-2 font-display text-3xl leading-tight">{h.title}</h3>
+              <p className="mt-1 font-mono text-xs uppercase tracking-[0.18em] text-foreground/60">
+                {h.tagline}
+              </p>
+              <p className="mt-3 text-sm text-foreground/75">{h.blurb}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section className="mx-auto mt-12 max-w-[1100px]">
+        <ContactForm />
       </section>
 
       <footer className="mx-auto mt-12 flex max-w-[1100px] items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">
