@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowUpRight,
@@ -20,6 +20,7 @@ import MediumCard from "@/components/MediumCard";
 import AwardsCard from "@/components/AwardsCard";
 import YouTubeCard from "@/components/YouTubeCard";
 import TestimonialsCard from "@/components/TestimonialsCard";
+import TiltCard from "@/components/fx/TiltCard";
 
 function useSpotlight() {
   const ref = useRef<HTMLElement | null>(null);
@@ -40,12 +41,6 @@ function useSpotlight() {
   return ref;
 }
 
-const fade = (delay = 0) => ({
-  initial: { opacity: 0, y: 14 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, delay, ease: [0.2, 0.8, 0.2, 1] as const },
-});
-
 function Tag({ children }: { children: React.ReactNode }) {
   return (
     <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/60">
@@ -54,12 +49,67 @@ function Tag({ children }: { children: React.ReactNode }) {
   );
 }
 
+function PortraitCard() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useSpring(useTransform(scrollYProgress, [0, 1], [-40, 60]), {
+    stiffness: 90,
+    damping: 20,
+  });
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.15, 1.05, 1.2]);
+  const blur = useTransform(scrollYProgress, [0, 0.5, 1], [2, 0, 2]);
+  const filter = useTransform(blur, (b) => `grayscale(1) blur(${b}px)`);
+
+  return (
+    <TiltCard
+      delay={0.05}
+      intensity={10}
+      className="bento relative !p-0 sm:col-span-2 md:col-span-2 md:row-span-2"
+    >
+      <div ref={ref} className="relative h-full w-full overflow-hidden rounded-[inherit]">
+        <motion.img
+          src={abir}
+          alt="Mohammad Abir Abbas — Creative Technologist and AI Architect"
+          style={{ y, scale, filter }}
+          className="h-full w-full object-cover will-change-transform"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--bento)] via-transparent to-transparent" />
+        <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+          <div>
+            <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--accent-teal)]">
+              Now
+            </div>
+            <div className="text-sm text-foreground/90">CTA · Wavelink</div>
+          </div>
+          <a
+            href="https://www.linkedin.com/in/abir-abbas"
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-full border border-white/15 p-2 transition hover:bg-white/10"
+            aria-label="LinkedIn"
+          >
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+        </div>
+      </div>
+    </TiltCard>
+  );
+}
+
 export default function Bento() {
   const ref = useSpotlight();
+  const { scrollYProgress } = useScroll();
+  const heroY = useTransform(scrollYProgress, [0, 0.3], [0, -80]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0.4]);
+
   return (
     <main
       ref={ref as React.RefObject<HTMLElement>}
-      className="min-h-screen px-4 py-6 md:px-8 md:py-10 print:p-0"
+      className="relative z-10 min-h-screen px-4 py-6 md:px-8 md:py-10 print:p-0"
+      style={{ perspective: "1200px" }}
     >
       {/* Top bar */}
       <header className="mx-auto mb-6 flex max-w-[1280px] items-center justify-between print:hidden">
@@ -89,9 +139,11 @@ export default function Bento() {
       {/* Bento Grid */}
       <section className="mx-auto grid max-w-[1280px] auto-rows-[minmax(120px,auto)] grid-cols-1 gap-3 sm:grid-cols-4 md:grid-cols-6 md:gap-4">
         {/* HERO — name + pitch */}
-        <motion.div
-          {...fade(0)}
+        <TiltCard
+          delay={0}
+          intensity={6}
           className="bento bento-feature grain sm:col-span-4 md:col-span-4 md:row-span-2"
+          style={{ y: heroY, opacity: heroOpacity }}
         >
           <div className="flex h-full flex-col justify-between gap-6">
             <div className="flex items-center justify-between">
@@ -115,40 +167,13 @@ export default function Bento() {
               <span>269K+ Readers</span>
             </div>
           </div>
-        </motion.div>
+        </TiltCard>
 
         {/* PORTRAIT */}
-        <motion.div
-          {...fade(0.05)}
-          className="bento relative !p-0 sm:col-span-2 md:col-span-2 md:row-span-2"
-        >
-          <img
-            src={abir}
-            alt="Mohammad Abir Abbas — Creative Technologist and AI Architect"
-            className="h-full w-full object-cover grayscale"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--bento)] via-transparent to-transparent" />
-          <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-            <div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--accent-teal)]">
-                Now
-              </div>
-              <div className="text-sm text-foreground/90">CTA · Wavelink</div>
-            </div>
-            <a
-              href="https://www.linkedin.com/in/abir-abbas"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-white/15 p-2 transition hover:bg-white/10"
-              aria-label="LinkedIn"
-            >
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-          </div>
-        </motion.div>
+        <PortraitCard />
 
         {/* METRIC 1 */}
-        <motion.div {...fade(0.1)} className="bento sm:col-span-2 md:col-span-2">
+        <TiltCard delay={0.1} className="bento sm:col-span-2 md:col-span-2">
           <Tag>// Engaze.ai integration</Tag>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="font-display text-6xl leading-none text-[color:var(--accent-lime)]">40%</span>
@@ -157,10 +182,10 @@ export default function Bento() {
           <p className="mt-2 text-xs text-foreground/60">
             Faster payment processing for 50+ sellers at Deep Blue Digital.
           </p>
-        </motion.div>
+        </TiltCard>
 
         {/* METRIC 2 */}
-        <motion.div {...fade(0.15)} className="bento sm:col-span-2 md:col-span-2">
+        <TiltCard delay={0.15} className="bento sm:col-span-2 md:col-span-2">
           <Tag>// Midjourney × Zapier</Tag>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="font-display text-6xl leading-none text-[color:var(--accent-amber)]">−30%</span>
@@ -168,10 +193,10 @@ export default function Bento() {
           <p className="mt-2 text-xs text-foreground/60">
             Customer Acquisition Cost cut via AI-driven marketing automation.
           </p>
-        </motion.div>
+        </TiltCard>
 
         {/* METRIC 3 */}
-        <motion.div {...fade(0.2)} className="bento md:col-span-2">
+        <TiltCard delay={0.2} className="bento md:col-span-2">
           <Tag>// MTTR</Tag>
           <div className="mt-3 flex items-baseline gap-2">
             <span className="font-display text-6xl leading-none text-[color:var(--accent-teal)]">−35%</span>
@@ -179,10 +204,10 @@ export default function Bento() {
           <p className="mt-2 text-xs text-foreground/60">
             Mean-time-to-resolution at HNM IT, Frankfurt — 99.9% uptime.
           </p>
-        </motion.div>
+        </TiltCard>
 
         {/* ROLE / NOW */}
-        <motion.div {...fade(0.1)} id="work" className="bento sm:col-span-4 md:col-span-4">
+        <TiltCard delay={0.1} id="work" className="bento sm:col-span-4 md:col-span-4">
           <div className="flex items-center justify-between">
             <Tag>// Currently Building</Tag>
             <span className="font-mono text-[10px] text-foreground/40">2025 — Present</span>
@@ -217,11 +242,11 @@ export default function Bento() {
               Explore Wavelink <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
-        </motion.div>
+        </TiltCard>
 
         {/* CONTACT CTA */}
-        <motion.div
-          {...fade(0.15)}
+        <TiltCard
+          delay={0.15}
           className="bento bento-feature flex flex-col justify-between sm:col-span-2 md:col-span-2"
         >
           <Tag>// Let's talk</Tag>
@@ -243,10 +268,10 @@ export default function Bento() {
             <a href="https://www.linkedin.com/in/abir-abbas" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="LinkedIn"><LinkIcon className="h-4 w-4" /></a>
             <a href="https://github.com/" target="_blank" rel="noreferrer" className="rounded-full border border-white/10 p-2 hover:bg-white/10" aria-label="Github"><Code2 className="h-4 w-4" /></a>
           </div>
-        </motion.div>
+        </TiltCard>
 
         {/* CAPABILITIES */}
-        <motion.div {...fade(0.1)} id="stack" className="bento sm:col-span-2 md:col-span-2">
+        <TiltCard delay={0.1} id="stack" className="bento sm:col-span-2 md:col-span-2">
           <Tag>// Capabilities</Tag>
           <ul className="mt-4 space-y-3 text-sm">
             <li className="flex items-center gap-3"><Cpu className="h-4 w-4 text-[color:var(--accent-teal)]" /> AI Agent Workflows</li>
@@ -254,10 +279,10 @@ export default function Bento() {
             <li className="flex items-center gap-3"><Zap className="h-4 w-4 text-[color:var(--accent-teal)]" /> React / React Native</li>
             <li className="flex items-center gap-3"><Globe2 className="h-4 w-4 text-[color:var(--accent-teal)]" /> Cross-cultural GTM</li>
           </ul>
-        </motion.div>
+        </TiltCard>
 
         {/* TIMELINE */}
-        <motion.div {...fade(0.15)} className="bento sm:col-span-2 md:col-span-2">
+        <TiltCard delay={0.15} className="bento sm:col-span-2 md:col-span-2">
           <Tag>// Path</Tag>
           <ol className="mt-4 space-y-3 font-mono text-xs text-foreground/70">
             <li className="flex gap-3"><span className="text-foreground/40">25→</span> Wavelink · CTA</li>
@@ -266,15 +291,15 @@ export default function Bento() {
             <li className="flex gap-3"><span className="text-foreground/40">22→</span> 42 Wolfsburg · C/C++</li>
             <li className="flex gap-3"><span className="text-foreground/40">22→</span> phaeno gGmbH · Robotics Mentor</li>
           </ol>
-        </motion.div>
+        </TiltCard>
 
         {/* AWARDS */}
-        <motion.div {...fade(0.18)} className="bento sm:col-span-4 md:col-span-4">
+        <TiltCard delay={0.18} className="bento sm:col-span-4 md:col-span-4">
           <AwardsCard />
-        </motion.div>
+        </TiltCard>
 
         {/* LANGUAGES */}
-        <motion.div {...fade(0.25)} className="bento sm:col-span-4 md:col-span-2">
+        <TiltCard delay={0.25} className="bento sm:col-span-4 md:col-span-2">
           <Tag>// Spoken</Tag>
           <div className="mt-4 grid grid-cols-3 gap-3">
             {[
@@ -288,22 +313,22 @@ export default function Bento() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </TiltCard>
 
         {/* YOUTUBE */}
-        <motion.div {...fade(0.2)} className="bento sm:col-span-4 md:col-span-4">
+        <TiltCard delay={0.2} className="bento sm:col-span-4 md:col-span-4">
           <YouTubeCard />
-        </motion.div>
+        </TiltCard>
 
         {/* TESTIMONIALS — marquee */}
-        <motion.div {...fade(0.22)} className="bento sm:col-span-4 md:col-span-2 overflow-hidden">
+        <TiltCard delay={0.22} className="bento sm:col-span-4 md:col-span-2 overflow-hidden">
           <TestimonialsCard />
-        </motion.div>
+        </TiltCard>
 
         {/* MEDIUM */}
-        <motion.div {...fade(0.2)} className="bento sm:col-span-4 md:col-span-6">
+        <TiltCard delay={0.2} className="bento sm:col-span-4 md:col-span-6">
           <MediumCard />
-        </motion.div>
+        </TiltCard>
       </section>
 
       {/* Marquee */}
