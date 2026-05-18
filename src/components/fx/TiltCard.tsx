@@ -1,4 +1,4 @@
-import { useRef, type ReactNode, type CSSProperties } from "react";
+import { useRef, type ReactNode } from "react";
 import {
   motion,
   useMotionValue,
@@ -13,7 +13,7 @@ interface TiltCardProps {
   delay?: number;
   intensity?: number;
   id?: string;
-  style?: CSSProperties;
+  style?: MotionStyle;
 }
 
 /**
